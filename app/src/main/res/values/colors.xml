@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+
+    <color name="app_primary">#00ACC7</color>
+    <color name="text_color_normal">#565854</color>
+    <color name="foundColorPrimaryDarker">#666666</color>
+
+    <color name="xronos_bg">#F9F9FA</color>
+</resources>
