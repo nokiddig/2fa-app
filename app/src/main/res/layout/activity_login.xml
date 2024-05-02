@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/xronos_bg"
-    tools:context=".LoginActivity"
+    tools:context=".view.LoginActivity"
     android:orientation="vertical">
 
     <androidx.core.widget.NestedScrollView
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:text="@string/login"
+                    android:text="T08 - 2FA"
                     app:layout_constraintEnd_toEndOf="@+id/imageView"
                     app:layout_constraintStart_toStartOf="@+id/imageView"
                     app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -53,7 +53,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/guideline2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/xronos_logo" />
+                    app:srcCompat="@color/app_primary" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline2"
@@ -84,7 +84,7 @@
                         android:layout_marginStart="47dp"
                         android:background="@color/xronos_bg"
                         android:paddingHorizontal="4dp"
-                        android:text="ユーザーID"
+                        android:text="Email"
                         android:textColor="@color/app_primary"
                         android:textSize="16sp"
                         android:translationY="12dp"
@@ -93,7 +93,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edt_company_id"
+                        android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="62dp"
                         android:background="@drawable/card_input"
@@ -126,7 +126,7 @@
                         android:layout_marginStart="48dp"
                         android:background="@color/xronos_bg"
                         android:paddingHorizontal="4dp"
-                        android:text="会社ID"
+                        android:text="Username"
                         android:textColor="@color/app_primary"
                         android:textSize="16dp"
                         android:translationY="12dp"
@@ -135,7 +135,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edt_user_id"
+                        android:id="@+id/edt_username"
                         android:layout_width="match_parent"
                         android:layout_height="62dp"
                         android:background="@drawable/card_input"
@@ -168,7 +168,7 @@
                         android:layout_marginStart="48dp"
                         android:background="@color/xronos_bg"
                         android:paddingHorizontal="4dp"
-                        android:text="パスワード"
+                        android:text="Password"
                         android:textColor="@color/app_primary"
                         android:textSize="16sp"
                         android:translationY="12dp"
@@ -197,15 +197,15 @@
 
                 </LinearLayout>
                 <CheckBox
-                    android:checked="true"
                     android:id="@+id/saveCheckbox"
+                    android:checked="true"
                     android:layout_marginHorizontal="11dp"
-                    android:text="ログイン画面に戻る"
+                    android:text="Remember account"
                     android:button="@drawable/check_box_selector"
                     android:textColor="@color/text_color_normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/bt_login"
                     style="@style/TextWhiteBold20"
                     android:layout_width="wrap_content"
@@ -214,19 +214,9 @@
                     android:layout_marginTop="18dp"
                     android:background="@drawable/button_blue"
                     android:paddingHorizontal="18dp"
-                    android:text="@string/login"
+                    android:text="Login"
                     android:textStyle="normal" />
 
-                <TextView
-                    android:id="@+id/tv_forgot_pass"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="18dp"
-                    android:text="パスワードを忘れた方"
-                    android:textColor="@color/app_primary"
-                    android:textSize="16sp"
-                    android:textStyle="normal" />
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_contact"
@@ -237,7 +227,7 @@
                 android:layout_marginBottom="18dp"
                 android:drawableLeft="@drawable/ic_phone"
                 android:drawablePadding="8dp"
-                android:text="お問い合わせ"
+                android:text="0123456789"
                 android:textColor="@color/text_color_normal"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
