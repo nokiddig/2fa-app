@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="top"
+    android:gravity="top|center"
     tools:context=".view.SettingFragment">
 
     <Switch
@@ -13,7 +13,8 @@
         android:layout_height="50dp"
         android:text="Switch" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@color/app_primary"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="Log out"

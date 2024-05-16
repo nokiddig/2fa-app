@@ -24,6 +24,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setListener() {
         binding.btLogin.setOnClickListener{
+
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
