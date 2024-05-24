@@ -2,11 +2,10 @@ package com.example.app_2fa.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import com.example.app_2fa.R
+import com.example.app_2fa.data.SocketManager
 import com.example.app_2fa.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
@@ -20,6 +19,12 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setListener()
+        val serverAddress = "107.178.102.172:3000" // Thay đổi thành địa chỉ server của bạn
+        val socketManager = SocketManager(serverAddress)
+//        socketManager.connect()
+
+        Log.d("bug_2fa", serverAddress)
+        socketManager.sendMessage("login user1 12345")
     }
 
     private fun setListener() {

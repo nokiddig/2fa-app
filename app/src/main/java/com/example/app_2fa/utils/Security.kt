@@ -1,14 +1,14 @@
 package com.example.app_2fa.utils
-import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
+import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
-import java.security.KeyFactory
+import java.security.PrivateKey
 import java.security.spec.X509EncodedKeySpec
-import javax.crypto.KeyAgreement
-import javax.crypto.spec.SecretKeySpec
 import java.util.Base64
+import javax.crypto.Cipher
+import javax.crypto.KeyAgreement
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
 
 class Security {
     fun generateAESKey(): SecretKey {
@@ -37,24 +37,22 @@ class Security {
         return keyPairGen.generateKeyPair()
     }
 
-    fun generateSharedSecret(ownPrivateKey: ByteArray, otherPublicKey: ByteArray): SecretKey {
+    fun generateSharedSecret(privateKey: PrivateKey, receivedPublicKey: ByteArray): ByteArray {
         val keyFactory = KeyFactory.getInstance("DH")
-        val otherPublicKeySpec = X509EncodedKeySpec(otherPublicKey)
-        val otherPubKey = keyFactory.generatePublic(otherPublicKeySpec)
+        val publicKeySpec = X509EncodedKeySpec(receivedPublicKey)
+        val publicKey = keyFactory.generatePublic(publicKeySpec)
 
         val keyAgreement = KeyAgreement.getInstance("DH")
-        keyAgreement.init(KeyFactory.getInstance("DH").generatePrivate(X509EncodedKeySpec(ownPrivateKey)))
-        keyAgreement.doPhase(otherPubKey, true)
-
-        val sharedSecret = keyAgreement.generateSecret()
-        return SecretKeySpec(sharedSecret, 0, 16, "AES") // Generate AES key from shared secret
+        keyAgreement.init(privateKey)
+        keyAgreement.doPhase(publicKey, true)
+        return keyAgreement.generateSecret()
     }
 
     // demo
     fun main(){
         //aes
         val secretKey = generateAESKey()
-        val plainText = "Hello, AES!"
+        val plainText = "Hello World, AES!"
         val encryptedText = encryptAES(plainText, secretKey)
         val decryptedText = decryptAES(encryptedText, secretKey)
 
@@ -72,10 +70,14 @@ class Security {
         val publicKeyB = keyPairB.public.encoded
 
         // Each party generates the shared secret
-        val secretKeyA = generateSharedSecret(keyPairA.private.encoded, publicKeyB)
-        val secretKeyB = generateSharedSecret(keyPairB.private.encoded, publicKeyA)
+        val secretKeyA = generateSharedSecret(keyPairA.private, publicKeyB)
+        val secretKeyB = generateSharedSecret(keyPairB.private, publicKeyA)
 
-        println("Secret Key A: ${Base64.getEncoder().encodeToString(secretKeyA.encoded)}")
-        println("Secret Key B: ${Base64.getEncoder().encodeToString(secretKeyB.encoded)}")
+        println("Secret Key A: ${Base64.getEncoder().encodeToString(secretKeyA)}")
+        println("Secret Key B: ${Base64.getEncoder().encodeToString(secretKeyB)}")
     }
+}
+
+fun main() {
+    Security().main();
 }
