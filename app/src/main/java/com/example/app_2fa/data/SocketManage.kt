@@ -1,7 +1,7 @@
 package com.example.app_2fa.data
 
 import android.util.Log
-import com.example.app_2fa.utils.SaveData
+import com.example.app_2fa.utils.Constants
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
@@ -39,18 +39,32 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
     private val onMessage = Emitter.Listener { args ->
         val message = args[0] as String
         Log.d("bug_2fa", "Received message: $message")
-        if (SaveData.IS_LOGIN ) {
-
-        }
-        else {
-            if (message.substring(0,2) == "10") {
-                _loginState.value = true
+        when (SYSTEM_MODE){
+            Constants.MODE_LOGIN -> {
+                if (message.substring(0,2) == "10") {
+                    _loginState.value = true
+                }
+                if (message.substring(0,2) == "11") {
+                    _twoFAState.value = true
+                }
             }
-            if (message.substring(0,2) == "11") {
-                _twoFAState.value = true
+
+            Constants.MODE_BAT_2FA -> {
+
+            }
+
+            Constants.MODE_XAC_MINH_2FA -> {
+
+            }
+
+            Constants.MODE_XAC_MINH_BAT_2FA -> {
+
+            }
+
+            Constants.MODE_REGISTER -> {
+
             }
         }
-
     }
 
     init {
@@ -59,6 +73,8 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
         socket.on(Socket.EVENT_DISCONNECT, onDisconnect)
         socket.on(Socket.EVENT_CONNECT_ERROR, onError)
         socket.on("message", onMessage)
+        socket.connect()
+        Thread.sleep(3000)
     }
 
     fun connect() {
@@ -72,14 +88,22 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
 
     fun sendMessage(message: String) {
         Log.d("bug_2fa", "send message: $message")
-        connect()
-        Thread.sleep(3000)
+        //connect()
+        //Thread.sleep(3000)
         socket.emit("message", message)
-        Thread.sleep(3000)
-        disconnect()
+        //Thread.sleep(1000)
+        //disconnect()
     }
 
     companion object {
         var SYSTEM_MODE = ""
+        @Volatile
+        private var instance: SocketManager? = null
+
+        fun getInstance(): SocketManager {
+            return instance ?: synchronized(this) {
+                instance ?: SocketManager().also { instance = it }
+            }
+        }
     }
 }

@@ -6,15 +6,18 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.ViewGroup
-import com.example.app_2fa.R
+import com.example.app_2fa.data.SocketManager
 import com.example.app_2fa.databinding.DialogOn2faBinding
+import com.example.app_2fa.utils.SaveData
 
-class DialogOn2fa (context: Context, val url: String) : Dialog(context) {
+class DialogOn2fa (context: Context) : Dialog(context) {
     private lateinit var binding: DialogOn2faBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_input_otp)
+        binding = DialogOn2faBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        //setContentView(R.layout.dialog_input_otp)
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, // Chiều rộng tùy chỉnh
             ViewGroup.LayoutParams.WRAP_CONTENT  // Chiều cao tùy chỉnh
@@ -26,6 +29,10 @@ class DialogOn2fa (context: Context, val url: String) : Dialog(context) {
 
     private fun setListener() {
         binding.tvYes.setOnClickListener {
+            val code = binding.edtOTP.text.toString()
+
+            val socketManager = SocketManager.getInstance()
+            socketManager.sendMessage("xacminhbat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD} $code")
             dismiss()
         }
         binding.tvNo.setOnClickListener {

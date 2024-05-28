@@ -30,11 +30,11 @@ class SettingViewModel : ViewModel() {
     fun request2FA(isChecked: Boolean) {
         val socket = SocketManager()
         if (isChecked) {
-            socket.sendMessage("bat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD}")
-            SocketManager.SYSTEM_MODE = "bat2fa"
-        } else {
             socket.sendMessage("tat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD}")
             SocketManager.SYSTEM_MODE = "tat2fa"
+        } else {
+            socket.sendMessage("bat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD}")
+            SocketManager.SYSTEM_MODE = "bat2fa"
         }
     }
 }

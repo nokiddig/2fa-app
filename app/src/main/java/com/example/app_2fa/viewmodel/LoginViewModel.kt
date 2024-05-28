@@ -13,7 +13,7 @@ class LoginViewModel : ViewModel() {
     private lateinit var socketManager: SocketManager
 
     fun initialize(serverAddress: String) {
-        socketManager = SocketManager(serverAddress)
+        socketManager = SocketManager.getInstance()
         viewModelScope.launch {
             socketManager.loginState.collect { state ->
                 _loginState.value = state

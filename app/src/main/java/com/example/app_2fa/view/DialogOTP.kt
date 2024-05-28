@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.ViewGroup
-import com.example.app_2fa.R
 import com.example.app_2fa.databinding.DialogInputOtpBinding
 
 class DialogOTP(context: Context) : Dialog(context) {
@@ -14,7 +13,9 @@ class DialogOTP(context: Context) : Dialog(context) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_input_otp)
+        binding = DialogInputOtpBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+//        setContentView(R.layout.dialog_input_otp)
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, // Chiều rộng tùy chỉnh
             ViewGroup.LayoutParams.WRAP_CONTENT  // Chiều cao tùy chỉnh
