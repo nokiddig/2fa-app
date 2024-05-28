@@ -3,6 +3,7 @@ package com.example.app_2fa.data
 import android.util.Log
 import androidx.core.text.isDigitsOnly
 import com.example.app_2fa.utils.Constants
+import com.example.app_2fa.utils.MyEncode
 import com.example.app_2fa.utils.SaveData
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -43,8 +44,10 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
     }
 
     private val onMessage = Emitter.Listener { args ->
-        val message = args[0] as String
-        Log.d("bug_2fa", "Received message -${SYSTEM_MODE}-: $message")
+        val encodeMessage = args[0] as String
+        Log.d("bug_2fa", "Received plaintext -${SYSTEM_MODE}-: ${MyEncode().decrypt(encodeMessage)}")
+        Log.d("bug_2fa", "Received encode -${SYSTEM_MODE}-: ${encodeMessage}")
+        val message = MyEncode().decrypt(encodeMessage)
         when (SYSTEM_MODE){
             Constants.MODE_LOGIN -> {
                 if (message.isDigitsOnly()) {
@@ -53,7 +56,7 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
             }
 
             Constants.MODE_BAT_2FA -> {
-
+                _keyState.value = message
             }
 
             Constants.MODE_TAT_2FA -> {
@@ -113,7 +116,10 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
             Thread.sleep(3000)
         }
         SYSTEM_MODE = message.split(" ").first()
-        socket.emit("message", message)
+        val encrypted = MyEncode().encrypt(message)
+        Log.d("bug_2fa", "send message: $encrypted")
+
+        socket.emit("message", encrypted)
     }
 
     companion object {

@@ -18,7 +18,7 @@ class Security {
     }
 
     fun encryptAES(plainText: String, secretKey: SecretKey): String {
-        val cipher = Cipher.getInstance("AES")
+        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
         cipher.init(Cipher.ENCRYPT_MODE, secretKey)
         val encryptedBytes = cipher.doFinal(plainText.toByteArray())
         return Base64.getEncoder().encodeToString(encryptedBytes)

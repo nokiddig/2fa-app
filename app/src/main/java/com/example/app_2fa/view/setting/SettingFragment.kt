@@ -32,6 +32,9 @@ class SettingFragment : Fragment() {
                 binding.switch2fa.isChecked = isOn
                 SaveData(requireContext()).update2faMode(isOn)
             }
+//            viewModel.genKeyState.collect{state ->
+//
+//            }
         }
         return binding.root
     }
