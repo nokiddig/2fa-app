@@ -1,10 +1,12 @@
-package com.example.app_2fa.view
+package com.example.app_2fa.view.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.app_2fa.R
 import com.example.app_2fa.databinding.ActivityMainBinding
+import com.example.app_2fa.view.setting.SettingFragment
+import com.example.app_2fa.view.home.HomeFragment
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

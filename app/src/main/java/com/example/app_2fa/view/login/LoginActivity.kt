@@ -1,4 +1,4 @@
-package com.example.app_2fa.view
+package com.example.app_2fa.view.login
 
 import android.Manifest
 import android.content.Intent
@@ -14,7 +14,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import com.example.app_2fa.data.SocketManager
 import com.example.app_2fa.databinding.ActivityLoginBinding
 import com.example.app_2fa.utils.SaveData
+import com.example.app_2fa.view.dialog.DialogOTP
+import com.example.app_2fa.view.main.MainActivity
 import com.example.app_2fa.viewmodel.LoginViewModel
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 @Suppress("UNREACHABLE_CODE")
@@ -36,11 +39,13 @@ class LoginActivity : AppCompatActivity() {
             loginViewModel.loginState.collect { loggedIn ->
                 when (loggedIn) {
                     10 -> {
+                        Log.d("bug_2fa", "login 10")
                         saveNewAccount(false)
                         onLoginSuccess()
                     }
 
                     1 -> {
+                        Log.d("bug_2fa", "login 1")
                         saveNewAccount(true)
                         onLoginSuccess()
                     }
@@ -82,6 +87,8 @@ class LoginActivity : AppCompatActivity() {
     private fun checkSaveAccount() {
         val saveAccount = SaveData(this)
         if (SaveData.IS_LOGIN) {
+
+            Log.d("bug_2fa", "login save")
             onLoginSuccess()
         }
         else {
@@ -118,9 +125,10 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onLoginSuccess() {
+        SocketManager.getInstance().clearLoginState()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
-        finish()
+        this.finish()
     }
 
     private fun setListener() {
@@ -131,8 +139,11 @@ class LoginActivity : AppCompatActivity() {
                 binding.edtUsername.text.toString(),
                 binding.edtPassword.text.toString()
             )
-
         }
     }
 
+    override fun finish() {
+        super.finish()
+        lifecycleScope.cancel()
+    }
 }

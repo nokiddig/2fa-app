@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="top|center"
-    tools:context=".view.SettingFragment">
+    tools:context=".view.setting.SettingFragment">
 
     <Switch
         android:id="@+id/switch2fa"

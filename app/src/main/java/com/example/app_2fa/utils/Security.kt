@@ -77,7 +77,3 @@ class Security {
         println("Secret Key B: ${Base64.getEncoder().encodeToString(secretKeyB)}")
     }
 }
-
-fun main() {
-    Security().main();
-}

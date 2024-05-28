@@ -1,4 +1,4 @@
-package com.example.app_2fa.view
+package com.example.app_2fa.view.dialog
 
 import android.app.Dialog
 import android.content.Context
@@ -7,17 +7,17 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.ViewGroup
 import com.example.app_2fa.data.SocketManager
-import com.example.app_2fa.databinding.DialogInputOtpBinding
+import com.example.app_2fa.databinding.DialogOn2faBinding
 import com.example.app_2fa.utils.SaveData
 
-class DialogOTP(context: Context) : Dialog(context) {
-    private lateinit var binding: DialogInputOtpBinding
+class DialogOn2fa (context: Context) : Dialog(context) {
+    private lateinit var binding: DialogOn2faBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DialogInputOtpBinding.inflate(layoutInflater)
+        binding = DialogOn2faBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        setContentView(R.layout.dialog_input_otp)
+        //setContentView(R.layout.dialog_input_otp)
         val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, // Chiều rộng tùy chỉnh
             ViewGroup.LayoutParams.WRAP_CONTENT  // Chiều cao tùy chỉnh
@@ -30,7 +30,9 @@ class DialogOTP(context: Context) : Dialog(context) {
     private fun setListener() {
         binding.tvYes.setOnClickListener {
             val code = binding.edtOTP.text.toString()
-            SocketManager.getInstance().sendMessage("xacminh2fa ${SaveData.USERNAME} ${SaveData.PASSWORD} $code")
+
+            val socketManager = SocketManager.getInstance()
+            socketManager.sendMessage("xacminhbat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD} $code")
             dismiss()
         }
         binding.tvNo.setOnClickListener {

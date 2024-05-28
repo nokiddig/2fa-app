@@ -1,4 +1,4 @@
-package com.example.app_2fa.view
+package com.example.app_2fa.view.setting
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.app_2fa.databinding.FragmentSettingBinding
 import com.example.app_2fa.utils.SaveData
+import com.example.app_2fa.view.dialog.DialogOn2fa
+import com.example.app_2fa.view.login.LoginActivity
 import com.example.app_2fa.viewmodel.SettingViewModel
 import kotlinx.coroutines.launch
 
@@ -66,9 +68,10 @@ class SettingFragment : Fragment() {
 
     private fun logout() {
         val saveData = SaveData(requireActivity())
+        SaveData.IS_LOGIN = false
         saveData.updateLoginStatus(false)
-        val intent = Intent(context, LoginActivity::class.java)
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
         requireActivity().startActivity(intent)
-        requireActivity().finish()
     }
+
 }
