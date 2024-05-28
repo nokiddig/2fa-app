@@ -8,11 +8,11 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel : ViewModel() {
 
-    private val _loginState = MutableStateFlow(false)
-    val loginState: StateFlow<Boolean> get() = _loginState
+    private val _loginState = MutableStateFlow(-1)
+    val loginState: StateFlow<Int> get() = _loginState
     private lateinit var socketManager: SocketManager
 
-    fun initialize(serverAddress: String) {
+    fun initialize() {
         socketManager = SocketManager.getInstance()
         viewModelScope.launch {
             socketManager.loginState.collect { state ->

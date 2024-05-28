@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         app:itemTextColor="@color/colorWhite"
         app:itemIconTint="@color/white"
+        app:itemBackground="@color/app_primary"
         app:labelVisibilityMode="labeled"
         app:backgroundTint="@color/app_primary"
         app:menu="@menu/main_menu"/>

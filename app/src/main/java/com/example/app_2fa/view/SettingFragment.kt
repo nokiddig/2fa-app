@@ -2,20 +2,24 @@ package com.example.app_2fa.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.app_2fa.databinding.FragmentSettingBinding
 import com.example.app_2fa.utils.SaveData
 import com.example.app_2fa.viewmodel.SettingViewModel
+import kotlinx.coroutines.launch
 
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
     }
 
     override fun onCreateView(
@@ -24,27 +28,35 @@ class SettingFragment : Fragment() {
     ): View? {
         binding = FragmentSettingBinding.inflate(inflater, container, false)
         setListener()
+        viewModel.initialize()
+        lifecycleScope.launch {
+            viewModel.twoFAState.collect { isOn ->
+                binding.switch2fa.isChecked = isOn
+                SaveData(requireContext()).update2faMode(isOn)
+            }
+        }
         return binding.root
-        //return inflater.inflate(R.layout.fragment_setting, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        Log.d("bug_2fa", "${SaveData.IS_2FA} ${SaveData.IS_2FA}")
         binding.switch2fa.isChecked = SaveData.IS_2FA
+
     }
     private fun setListener() {
         binding.btnLogout.setOnClickListener {
             logout()
         }
 
-        binding.switch2fa.setOnCheckedChangeListener { buttonView, isChecked ->
-            buttonView.isChecked = !isChecked
+        binding.switch2fa.setOnClickListener { buttonView ->
+            var curFactorState = !binding.switch2fa.isChecked
             //da bat -> chuyen sang tat
-            if (buttonView.isChecked){
-                val dialog = context?.let {
-                    DialogOTP(context = it)
-                }
-                dialog?.show()
+            binding.switch2fa.isChecked = curFactorState
+            if (curFactorState){
+                //SaveData(requireContext()).update2faMode(false)
+
             }
             else {
                 val dialog = context?.let {
@@ -52,14 +64,15 @@ class SettingFragment : Fragment() {
                 }
                 dialog?.show()
             }
-            viewModel.request2FA(buttonView.isChecked)
+            viewModel.request2FA(curFactorState)
         }
     }
 
     private fun logout() {
-        context?.let { SaveData(it).updateLoginStatus(false) }
-        val intent = Intent(activity, LoginActivity::class.java)
-        startActivity(intent)
-        activity?.finishAffinity()
+        val saveData = SaveData(requireActivity())
+        saveData.updateLoginStatus(false)
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        requireActivity().startActivity(intent)
+        requireActivity().finish()
     }
 }

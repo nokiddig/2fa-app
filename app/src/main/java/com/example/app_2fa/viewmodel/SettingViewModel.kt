@@ -14,8 +14,8 @@ class SettingViewModel : ViewModel() {
 
     private lateinit var socketManager: SocketManager
 
-    fun initialize(serverAddress: String) {
-        socketManager = SocketManager(serverAddress)
+    fun initialize() {
+        socketManager = SocketManager.getInstance()
         viewModelScope.launch {
             socketManager.twoFAState.collect { state ->
                 _2FaState.value = state
@@ -23,18 +23,14 @@ class SettingViewModel : ViewModel() {
         }
     }
 
-    fun sendLoginMessage(username: String, password: String) {
-        socketManager.sendMessage("login $username $password")
-    }
-
     fun request2FA(isChecked: Boolean) {
-        val socket = SocketManager()
+        val socket = SocketManager.getInstance()
         if (isChecked) {
             socket.sendMessage("tat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD}")
-            SocketManager.SYSTEM_MODE = "tat2fa"
+//            SocketManager.SYSTEM_MODE = "tat2fa"
         } else {
             socket.sendMessage("bat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD}")
-            SocketManager.SYSTEM_MODE = "bat2fa"
+//            SocketManager.SYSTEM_MODE = "bat2fa"
         }
     }
 }

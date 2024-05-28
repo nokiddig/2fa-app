@@ -13,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.ui.AppBarConfiguration
 import com.example.app_2fa.data.SocketManager
 import com.example.app_2fa.databinding.ActivityLoginBinding
-import com.example.app_2fa.utils.Constants
 import com.example.app_2fa.utils.SaveData
 import com.example.app_2fa.viewmodel.LoginViewModel
 import kotlinx.coroutines.launch
@@ -32,32 +31,36 @@ class LoginActivity : AppCompatActivity() {
         setListener()
         checkPermission()
         checkSaveAccount()
-        loginViewModel.initialize(serverAddress)
+        loginViewModel.initialize()
         lifecycleScope.launch {
             loginViewModel.loginState.collect { loggedIn ->
-                if (loggedIn) {
-                    saveNewAccount()
-                    onLoginSuccess()
-                }
-            }
-            loginViewModel.loginState.collect { loggedIn ->
-                if (loggedIn) {
-                    saveNewAccount()
-                    onLoginSuccess()
+                when (loggedIn) {
+                    10 -> {
+                        saveNewAccount(false)
+                        onLoginSuccess()
+                    }
+
+                    1 -> {
+                        saveNewAccount(true)
+                        onLoginSuccess()
+                    }
+
+                    11 -> {
+                        Log.d("bug_2fa", "Mode: login 11 ${SocketManager.SYSTEM_MODE}")
+                        val dialog = DialogOTP(this@LoginActivity)
+                        dialog.show()
+                    }
+
+                    0 -> {
+                    }
                 }
             }
         }
-//        testSocket()
     }
 
-    private fun saveNewAccount() {
+    private fun saveNewAccount(is2fa: Boolean) {
         val saveAccount = SaveData(this)
 
-        Log.d("bug_2fa","${binding.saveCheckbox.isChecked}")
-        var is2fa = false;
-        if (SocketManager.SYSTEM_MODE == Constants.MODE_XAC_MINH_2FA){
-            is2fa = true
-        }
         if (binding.saveCheckbox.isChecked) {
             saveAccount.updateData(
                 true,
@@ -73,6 +76,9 @@ class LoginActivity : AppCompatActivity() {
                 binding.edtPassword.text.toString(),
                 "")
         }
+
+
+        Log.d("bug_2fa", "is2fa ${SaveData.IS_2FA}")
     }
 
     private fun checkSaveAccount() {
@@ -121,10 +127,13 @@ class LoginActivity : AppCompatActivity() {
 
     private fun setListener() {
         binding.btLogin.setOnClickListener {
+            SaveData(this).updateAccount(binding.edtUsername.text.toString(),
+            binding.edtPassword.text.toString(), "")
             loginViewModel.sendLoginMessage(
                 binding.edtUsername.text.toString(),
                 binding.edtPassword.text.toString()
             )
+
         }
     }
 

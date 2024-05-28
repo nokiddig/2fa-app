@@ -55,4 +55,22 @@ class SaveData(val context: Context) {
         editor.putBoolean(isLoginLabel, isLogin)
         editor.apply()
     }
+
+    fun updateAccount(username: String, password: String, email: String) {
+        USERNAME = username
+        PASSWORD = password
+        EMAIL = email
+        val editor = sharedPreferences.edit()
+        editor.putString(usernameLabel, username)
+        editor.putString(passwordLabel, password)
+        editor.putString(emailLabel, email)
+        editor.apply()
+    }
+
+    fun update2faMode(mode: Boolean) {
+        IS_2FA = mode
+        val editor = sharedPreferences.edit()
+        editor.putBoolean(is2FALabel, mode)
+        editor.apply()
+    }
 }
