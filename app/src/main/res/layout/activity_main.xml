@@ -24,8 +24,9 @@
         android:layout_height="wrap_content"
         app:itemTextColor="@color/colorWhite"
         app:itemIconTint="@color/white"
+        app:itemActiveIndicatorStyle="@style/Widget.Material3.FloatingActionButton.Tertiary"
         app:itemBackground="@color/app_primary"
         app:labelVisibilityMode="labeled"
         app:backgroundTint="@color/app_primary"
-        app:menu="@menu/main_menu"/>
+        app:menu="@menu/main_menu" />
 </androidx.constraintlayout.widget.ConstraintLayout>

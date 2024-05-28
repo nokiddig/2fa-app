@@ -16,6 +16,7 @@ import com.example.app_2fa.view.login.LoginActivity
 import com.example.app_2fa.viewmodel.SettingViewModel
 import kotlinx.coroutines.launch
 
+@Suppress("UNREACHABLE_CODE")
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingViewModel by viewModels()
@@ -28,14 +29,21 @@ class SettingFragment : Fragment() {
         setListener()
         viewModel.initialize()
         lifecycleScope.launch {
+            viewModel.genKeyState.collect { state ->
+                if (state.isNotEmpty()) {
+                    val dialog = DialogOn2fa(context = requireContext(), key = state)
+                    dialog.show()
+                }
+            }
+        }
+
+        lifecycleScope.launch {
             viewModel.twoFAState.collect { isOn ->
                 binding.switch2fa.isChecked = isOn
                 SaveData(requireContext()).update2faMode(isOn)
             }
-//            viewModel.genKeyState.collect{state ->
-//
-//            }
         }
+
         return binding.root
     }
 
@@ -55,16 +63,13 @@ class SettingFragment : Fragment() {
             var curFactorState = !binding.switch2fa.isChecked
             //da bat -> chuyen sang tat
             binding.switch2fa.isChecked = curFactorState
-            if (curFactorState){
-                //SaveData(requireContext()).update2faMode(false)
-
-            }
-            else {
-                val dialog = context?.let {
-                    DialogOn2fa(context = it)
-                }
-                dialog?.show()
-            }
+//            if (curFactorState){
+//                //SaveData(requireContext()).update2faMode(false)
+//
+//            }
+//            else {
+//
+//            }
             viewModel.request2FA(curFactorState)
         }
     }

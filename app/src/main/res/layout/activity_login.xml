@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_login"
     tools:context=".view.login.LoginActivity"
     android:orientation="vertical">
 
@@ -20,6 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/bg_login"
             app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,7 +61,7 @@
                     android:layout_marginTop="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Welcome \nback"
+                    android:text="Welcome \nBack"
                     android:textSize="40sp"
                     android:textColor="@color/white"
                     tools:layout_editor_absoluteX="38dp"
@@ -76,7 +76,7 @@
                 android:translationY="50dp">
 
                 <LinearLayout
-
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -119,6 +119,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_marginTop="70dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -126,6 +127,7 @@
 
 
                     <TextView
+
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_marginStart="48dp"
@@ -181,7 +183,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edt_password"
                         android:layout_width="match_parent"
                         android:layout_height="62dp"
@@ -225,16 +227,15 @@
 
             </LinearLayout>
             <TextView
-                android:id="@+id/tv_contact"
+                android:id="@+id/tv_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="18dp"
-                android:drawableLeft="@drawable/ic_phone"
                 android:drawablePadding="8dp"
-                android:text="0123456789"
+                android:text="Register now"
                 android:textColor="@color/text_color_normal"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.ui.AppBarConfiguration
 import com.example.app_2fa.data.SocketManager
 import com.example.app_2fa.databinding.ActivityLoginBinding
 import com.example.app_2fa.utils.SaveData
@@ -22,10 +21,8 @@ import kotlinx.coroutines.launch
 
 @Suppress("UNREACHABLE_CODE")
 class LoginActivity : AppCompatActivity() {
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityLoginBinding
     private val loginViewModel: LoginViewModel by viewModels()
-    private val serverAddress = "107.178.102.172:3000"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +55,20 @@ class LoginActivity : AppCompatActivity() {
 
                 }
             }
+        }
+    }
+
+    private fun setListener() {
+        binding.btLogin.setOnClickListener {
+            SaveData(this).updateAccount(binding.edtUsername.text.toString(),
+                binding.edtPassword.text.toString(), "")
+            loginViewModel.sendLoginMessage(
+                binding.edtUsername.text.toString(),
+                binding.edtPassword.text.toString()
+            )
+        }
+        binding.tvRegister.setOnClickListener {
+            goToRegister()
         }
     }
 
@@ -131,15 +142,10 @@ class LoginActivity : AppCompatActivity() {
         this.finish()
     }
 
-    private fun setListener() {
-        binding.btLogin.setOnClickListener {
-            SaveData(this).updateAccount(binding.edtUsername.text.toString(),
-            binding.edtPassword.text.toString(), "")
-            loginViewModel.sendLoginMessage(
-                binding.edtUsername.text.toString(),
-                binding.edtPassword.text.toString()
-            )
-        }
+    private  fun goToRegister() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        this.finish()
     }
 
     override fun finish() {

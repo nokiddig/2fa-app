@@ -3,7 +3,7 @@ package com.example.app_2fa.data
 import android.util.Log
 import androidx.core.text.isDigitsOnly
 import com.example.app_2fa.utils.Constants
-import com.example.app_2fa.utils.MyEncode
+import com.example.app_2fa.utils.MySecurity
 import com.example.app_2fa.utils.SaveData
 import io.socket.client.IO
 import io.socket.client.Socket
@@ -14,16 +14,16 @@ import kotlinx.coroutines.flow.StateFlow
 class SocketManager(serverAddress: String = "107.178.102.172:3000") {
     private val socket: Socket = IO.socket("http://$serverAddress")
     //live data
-    private val _loginState = MutableStateFlow(0)
+    private val _loginState = MutableStateFlow(-1)
     private val _twoFAState = MutableStateFlow(SaveData.IS_2FA)
     private val _keyState = MutableStateFlow("")
-    private val _code2FAState = MutableStateFlow("")
+    private val _registerState = MutableStateFlow(-1)
     private var connectStatus = false
 
     val loginState: StateFlow<Int> get() = _loginState
     val twoFAState: StateFlow<Boolean> get() = _twoFAState
     val keyState: StateFlow<String> get() = _keyState
-    val code2FAState: StateFlow<String> get() = _code2FAState
+    val registerState: StateFlow<Int> get() = _registerState
 
     // Khởi tạo các listener
     private val onConnect = Emitter.Listener {
@@ -45,9 +45,9 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
 
     private val onMessage = Emitter.Listener { args ->
         val encodeMessage = args[0] as String
-        Log.d("bug_2fa", "Received plaintext -${SYSTEM_MODE}-: ${MyEncode().decrypt(encodeMessage)}")
+        Log.d("bug_2fa", "Received plaintext -${SYSTEM_MODE}-: ${MySecurity().decrypt(encodeMessage)}")
         Log.d("bug_2fa", "Received encode -${SYSTEM_MODE}-: ${encodeMessage}")
-        val message = MyEncode().decrypt(encodeMessage)
+        val message = MySecurity().decrypt(encodeMessage)
         when (SYSTEM_MODE){
             Constants.MODE_LOGIN -> {
                 if (message.isDigitsOnly()) {
@@ -86,7 +86,9 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
             }
 
             Constants.MODE_REGISTER -> {
-
+                if (message.isDigitsOnly()) {
+                    _registerState.value = message.toInt()
+                }
             }
         }
     }
@@ -116,7 +118,7 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
             Thread.sleep(3000)
         }
         SYSTEM_MODE = message.split(" ").first()
-        val encrypted = MyEncode().encrypt(message)
+        val encrypted = MySecurity().encrypt(message)
         Log.d("bug_2fa", "send message: $encrypted")
 
         socket.emit("message", encrypted)
@@ -136,5 +138,13 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
 
     fun clearLoginState(){
         _loginState.value = -1
+    }
+
+    fun clearKey() {
+        _keyState.value = ""
+    }
+
+    fun clearRegisterState(){
+        _registerState.value = -1
     }
 }

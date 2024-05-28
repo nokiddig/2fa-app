@@ -5,7 +5,7 @@ import java.security.MessageDigest
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 
-class MyEncode(val secretkey:String = "tuanhuysy"){
+class MySecurity(val secretkey:String = "tuanhuysy"){
     fun hashKey(key: String): ByteArray {
         val digest = MessageDigest.getInstance("SHA-256")
         return digest.digest(key.toByteArray(Charsets.UTF_8))
@@ -27,14 +27,4 @@ class MyEncode(val secretkey:String = "tuanhuysy"){
         val decrypted = cipher.doFinal(encryptedBytes)
         return String(decrypted, Charsets.UTF_8)
     }
-}
-
-
-fun main() {
-//    val key = hashKey("tuanhuysy")
-//    val encrypted = encrypt("Hello World", key)
-//    val decrypted = decrypt(encrypted, key)
-//
-//    println("Encrypted: $encrypted")
-//    println("Decrypted: $decrypted")
 }

@@ -10,7 +10,7 @@ import com.example.app_2fa.data.SocketManager
 import com.example.app_2fa.databinding.DialogOn2faBinding
 import com.example.app_2fa.utils.SaveData
 
-class DialogOn2fa (context: Context) : Dialog(context) {
+class DialogOn2fa (context: Context, val key: String) : Dialog(context) {
     private lateinit var binding: DialogOn2faBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +24,7 @@ class DialogOn2fa (context: Context) : Dialog(context) {
         )
         window?.setLayout(layoutParams.width, layoutParams.height)
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        binding.tvKey.setText("Key: $key")
         setListener()
     }
 
@@ -38,5 +39,10 @@ class DialogOn2fa (context: Context) : Dialog(context) {
         binding.tvNo.setOnClickListener {
             dismiss()
         }
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        SocketManager.getInstance().clearKey()
     }
 }

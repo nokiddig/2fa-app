@@ -7,18 +7,33 @@
     android:gravity="top|center"
     tools:context=".view.setting.SettingFragment">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/medium_gray"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
+
     <Switch
+        android:paddingHorizontal="20dp"
         android:id="@+id/switch2fa"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="Switch" />
+        android:text="@string/tow_factor_mode" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/medium_gray"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnLogout"
-        android:background="@color/app_primary"
+        android:background="@drawable/button_blue_enable"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:text="Log out"
+        android:text="@string/log_out"
         />
 
 </LinearLayout>

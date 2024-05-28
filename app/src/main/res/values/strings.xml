@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">app_2fa</string>
+    <string name="app_name">Tow-Factor App</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -9,4 +9,21 @@
 
     <string name="login">Login</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="setup_guide">Setup Guide</string>
+    <string name="guild_1">1. Download the Authenticator App</string>
+    <string name="guild2">If you haven\'t installed any authenticator app, you should download Duo Mobile or Google Authenticator.</string>
+    <string name="guild3">2. Copy the Key String</string>
+    <string name="guil4">Copy the key and paste it into the authenticator app.</string>
+    <string name="guild5">EIY6 R6AT TZFH URP3 HNM5 PTQL G54Z 34Q7</string>
+    <string name="guild6">Copy Key</string>
+    <string name="guild7">3. Copy and Enter the 6-Digit Code</string>
+    <string name="guild8">After completing the above steps, the authenticator app will generate a 6-digit code. Copy it and return to this app to enter the code.</string>
+    <string name="agree">Agree</string>
+    <string name="tow_factor_mode">Tow factor mode</string>
+    <string name="log_out">Log out</string>
+    <string name="key">Key:</string>
+    <string name="no">No</string>
+    <string name="on_two_factor">On two factor</string>
+    <string name="otp">OTP:</string>
+    <string name="yes">Yes</string>
 </resources>

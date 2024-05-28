@@ -13,7 +13,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="On two factor"
+        android:text="@string/on_two_factor"
+        android:textAlignment="center"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tv_key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="@string/key"
         android:textAlignment="center"
         android:textStyle="bold"/>
 
@@ -27,7 +37,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="Key:"
+            android:text="@string/otp"
             android:textAlignment="center"/>
         <EditText
             android:id="@+id/edtOTP"
@@ -53,7 +63,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#f00"
-            android:text="No" />
+            android:text="@string/no" />
 
         <TextView
             android:id="@+id/tv_yes"
@@ -62,6 +72,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:textColor="#3478F6"
-            android:text="Yes" />
+            android:text="@string/yes" />
     </LinearLayout>
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.app_2fa.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app_2fa.data.SocketManager
@@ -20,11 +21,15 @@ class SettingViewModel : ViewModel() {
     fun initialize() {
         socketManager = SocketManager.getInstance()
         viewModelScope.launch {
+            socketManager.keyState.collect { state ->
+                Log.d("bug_2fa", "gen key: $state")
+                _genKeyState.value = state
+            }
+        }
+
+        viewModelScope.launch {
             socketManager.twoFAState.collect { state ->
                 _2FaState.value = state
-            }
-            socketManager.keyState.collect {state ->
-                _genKeyState.value = state
             }
         }
     }
@@ -33,10 +38,8 @@ class SettingViewModel : ViewModel() {
         val socket = SocketManager.getInstance()
         if (isChecked) {
             socket.sendMessage("tat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD}")
-//            SocketManager.SYSTEM_MODE = "tat2fa"
         } else {
             socket.sendMessage("bat2fa ${SaveData.USERNAME} ${SaveData.PASSWORD}")
-//            SocketManager.SYSTEM_MODE = "bat2fa"
         }
     }
 }
