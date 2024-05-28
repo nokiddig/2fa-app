@@ -97,7 +97,6 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
         socket.on("message", onMessage)
         socket.connect()
         Thread.sleep(3000)
-        sendMessage("tat2fa user1 12345")
     }
 
     fun connect() {
@@ -129,5 +128,9 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
                 instance ?: SocketManager().also { instance = it }
             }
         }
+    }
+
+    fun clearLoginState(){
+        _loginState.value = -1
     }
 }

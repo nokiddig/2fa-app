@@ -66,9 +66,10 @@ class SettingFragment : Fragment() {
 
     private fun logout() {
         val saveData = SaveData(requireActivity())
+        SaveData.IS_LOGIN = false
         saveData.updateLoginStatus(false)
-        val intent = Intent(context, LoginActivity::class.java)
+        val intent = Intent(requireActivity(), LoginActivity::class.java)
         requireActivity().startActivity(intent)
-        requireActivity().finish()
     }
+
 }
