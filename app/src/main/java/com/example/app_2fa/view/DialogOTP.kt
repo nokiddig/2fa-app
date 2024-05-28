@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import com.example.app_2fa.R
 import com.example.app_2fa.databinding.DialogInputOtpBinding
 
-class DialogOTP(context: Context, val url: String) : Dialog(context) {
+class DialogOTP(context: Context) : Dialog(context) {
     private lateinit var binding: DialogInputOtpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

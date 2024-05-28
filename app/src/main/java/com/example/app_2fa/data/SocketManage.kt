@@ -1,12 +1,25 @@
 package com.example.app_2fa.data
 
 import android.util.Log
+import com.example.app_2fa.utils.SaveData
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.emitter.Emitter
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class SocketManager(serverAddress: String) {
+class SocketManager(serverAddress: String = "107.178.102.172:3000") {
     private val socket: Socket = IO.socket("http://$serverAddress")
+    //live data
+    private val _loginState = MutableStateFlow(false)
+    private val _twoFAState = MutableStateFlow(false)
+    private val _keyState = MutableStateFlow("")
+    private val _code2FAState = MutableStateFlow("")
+
+    val loginState: StateFlow<Boolean> get() = _loginState
+    val twoFAState: StateFlow<Boolean> get() = _twoFAState
+    val keyState: StateFlow<String> get() = _keyState
+    val code2FAState: StateFlow<String> get() = _code2FAState
 
     // Khởi tạo các listener
     private val onConnect = Emitter.Listener {
@@ -26,6 +39,18 @@ class SocketManager(serverAddress: String) {
     private val onMessage = Emitter.Listener { args ->
         val message = args[0] as String
         Log.d("bug_2fa", "Received message: $message")
+        if (SaveData.IS_LOGIN ) {
+
+        }
+        else {
+            if (message.substring(0,2) == "10") {
+                _loginState.value = true
+            }
+            if (message.substring(0,2) == "11") {
+                _twoFAState.value = true
+            }
+        }
+
     }
 
     init {
@@ -37,6 +62,7 @@ class SocketManager(serverAddress: String) {
     }
 
     fun connect() {
+        Log.d("bug_2fa", "Connecting")
         socket.connect()
     }
 
@@ -45,24 +71,15 @@ class SocketManager(serverAddress: String) {
     }
 
     fun sendMessage(message: String) {
-        connect()
-        Thread.sleep(5000)
-
-//        val jsonMessage = JsonObject().apply {
-//            addProperty("message", message)
-//        }
-        socket.emit("message", message)
-        Thread.sleep(5000)
         Log.d("bug_2fa", "send message: $message")
+        connect()
+        Thread.sleep(3000)
+        socket.emit("message", message)
+        Thread.sleep(3000)
         disconnect()
     }
-}
 
-//fun main() {
-//    val serverAddress = "107.178.102.172:3000" // Thay đổi thành địa chỉ server của bạn
-//    val socketManager = SocketManager(serverAddress)
-//    socketManager.connect()
-//
-//    // Gửi dữ liệu sau khi kết nối
-//    socketManager.sendMessage("Hello, server!")
-//}
+    companion object {
+        var SYSTEM_MODE = ""
+    }
+}
