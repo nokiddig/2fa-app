@@ -51,8 +51,6 @@ class LoginActivity : AppCompatActivity() {
                         dialog.show()
                     }
 
-                    0 -> {
-                    }
                 }
             }
         }

@@ -1,10 +1,9 @@
 package com.example.app_2fa.view
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.app_2fa.R
-import com.example.app_2fa.databinding.ActivityLoginBinding
 import com.example.app_2fa.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -13,10 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        //setContentView(R.layout.activity_main)
-        //val bottomNavigationView = findViewById<BottomNavigationView>(R.id.navigation)
 
-        // Set initial fragment
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frame_layout, HomeFragment())

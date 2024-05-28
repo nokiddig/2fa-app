@@ -17,10 +17,6 @@ import kotlinx.coroutines.launch
 class SettingFragment : Fragment() {
     private lateinit var binding: FragmentSettingBinding
     private val viewModel: SettingViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,8 +39,8 @@ class SettingFragment : Fragment() {
 
         Log.d("bug_2fa", "${SaveData.IS_2FA} ${SaveData.IS_2FA}")
         binding.switch2fa.isChecked = SaveData.IS_2FA
-
     }
+
     private fun setListener() {
         binding.btnLogout.setOnClickListener {
             logout()
@@ -71,7 +67,7 @@ class SettingFragment : Fragment() {
     private fun logout() {
         val saveData = SaveData(requireActivity())
         saveData.updateLoginStatus(false)
-        val intent = Intent(requireActivity(), LoginActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java)
         requireActivity().startActivity(intent)
         requireActivity().finish()
     }
