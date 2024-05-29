@@ -24,7 +24,7 @@
         <activity
             android:name=".view.login.LoginActivity"
             android:exported="true"
-            android:label="@string/title_activity_login"
+            android:label="@string/app_name"
             android:theme="@style/Theme.App_2fa">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
