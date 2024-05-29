@@ -88,8 +88,12 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
             }
 
             Constants.MODE_XAC_MINH_BAT_2FA -> {
-                if (message == "1") {
-                    _twoFAState.value = true
+                _twoFAState.value  = message == "1"
+                if (message == "1"){
+                    _otpState.value = 1
+                }
+                else {
+                    _otpState.value = 0
                 }
             }
 
@@ -144,15 +148,15 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
         }
     }
 
-    fun clearLoginState(){
+    fun resetLoginState(){
         _loginState.value = -1
     }
 
-    fun clearKey() {
+    fun resetKey() {
         _keyState.value = ""
     }
 
-    fun clearRegisterState(){
+    fun resetRegisterState(){
         _registerState.value = -1
     }
 

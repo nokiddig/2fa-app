@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -58,8 +59,8 @@ class LoginActivity : AppCompatActivity() {
                     0 -> {
                         Toast.makeText(applicationContext, "Login fail!", Toast.LENGTH_SHORT).show()
                     }
-
                 }
+                SocketManager.getInstance().resetLoginState()
             }
         }
         lifecycleScope.launch {
@@ -74,18 +75,38 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun isValidateLogin(username: String, password: String): Boolean {
+        val passwordPattern = "^[A-Za-z0-9]{5,20}\$"
+        val usernamePattern = "^[A-Za-z0-9]{3,20}\$"
+        return username.matches(usernamePattern.toRegex()) && password.matches(passwordPattern.toRegex())
+    }
+
     private fun setListener() {
         binding.btLogin.setOnClickListener {
-            SaveData(this).updateAccount(binding.edtUsername.text.toString(),
-                binding.edtPassword.text.toString(), "")
-            loginViewModel.sendLoginMessage(
-                binding.edtUsername.text.toString(),
-                binding.edtPassword.text.toString()
-            )
+            val username = binding.edtUsername.text.toString()
+            val password = binding.edtPassword.text.toString()
+
+            if (isValidateLogin(username, password)) {
+                SaveData(this).updateAccount(username, password, "")
+                loginViewModel.sendLoginMessage(username, password)
+            } else {
+                showAlertDialog()
+            }
         }
+
         binding.tvRegister.setOnClickListener {
             goToRegister()
         }
+    }
+
+    private fun showAlertDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Invalid input")
+        builder.setMessage("- Username at least characters.\n- Password must be between 5 and 20 characters.")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
     private fun saveNewAccount(is2fa: Boolean) {
@@ -101,12 +122,13 @@ class LoginActivity : AppCompatActivity() {
                 ""
             )
         } else {
-            saveAccount.updateData(true, false, is2fa,
+            saveAccount.updateData(
+                true, false, is2fa,
                 binding.edtUsername.text.toString(),
                 binding.edtPassword.text.toString(),
-                "")
+                ""
+            )
         }
-
 
         Log.d("bug_2fa", "is2fa ${SaveData.IS_2FA}")
     }
@@ -117,9 +139,8 @@ class LoginActivity : AppCompatActivity() {
 
             Log.d("bug_2fa", "login save")
             onLoginSuccess()
-        }
-        else {
-            if (SaveData.IS_SAVE){
+        } else {
+            if (SaveData.IS_SAVE) {
                 binding.edtUsername.setText(SaveData.USERNAME)
                 binding.edtPassword.setText(SaveData.PASSWORD)
             }
@@ -152,13 +173,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun onLoginSuccess() {
-        SocketManager.getInstance().clearLoginState()
+        SocketManager.getInstance().resetLoginState()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         this.finish()
     }
 
-    private  fun goToRegister() {
+    private fun goToRegister() {
         val intent = Intent(this, RegisterActivity::class.java)
         startActivity(intent)
         this.finish()

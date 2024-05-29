@@ -43,6 +43,6 @@ class DialogOn2fa (context: Context, val key: String) : Dialog(context) {
 
     override fun dismiss() {
         super.dismiss()
-        SocketManager.getInstance().clearKey()
+        SocketManager.getInstance().resetKey()
     }
 }

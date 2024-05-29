@@ -15,6 +15,8 @@ class SettingViewModel : ViewModel() {
     val twoFAState: StateFlow<Boolean> get() = _2FaState
     private val _genKeyState = MutableStateFlow("")
     val genKeyState: StateFlow<String> get() = _genKeyState
+    private var _otpState = MutableStateFlow(-1)
+    val otpState: StateFlow<Int> get() = _otpState
 
     private lateinit var socketManager: SocketManager
 
@@ -30,6 +32,13 @@ class SettingViewModel : ViewModel() {
         viewModelScope.launch {
             socketManager.twoFAState.collect { state ->
                 _2FaState.value = state
+            }
+        }
+
+        viewModelScope.launch {
+            socketManager.otpState.collect { state ->
+                Log.d("bug_2fa", "gen key: $state")
+                _otpState.value = state
             }
         }
     }

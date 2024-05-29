@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,7 +21,6 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel: RegisterViewModel by viewModels()
-    private val serverAddress = "107.178.102.172:3000"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,38 +30,70 @@ class RegisterActivity : AppCompatActivity() {
         viewModel.initialize()
         lifecycleScope.launch {
             viewModel.registerState.collect { state ->
-                    Log.d("bug_2fa", "login 1")
-                if (state>=0){
+                Log.d("bug_2fa", "login 1")
+                if (state >= 0) {
                     var message = ""
-                    if (state == 1){
-                        message = "Create account successful."
-                    }
-                    else {
-                        message = "Create account fail."
+                    message = if (state == 1) {
+                        "Create account successful."
+                    } else {
+                        "Create account fail."
                     }
                     Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
-                    SocketManager.getInstance().clearRegisterState()
+                    SocketManager.getInstance().resetRegisterState()
+                    if (state == 1) {
+                        goToLogin()
+                    }
                 }
-                }
-
             }
+
         }
+    }
+
+    private fun isValidateRegister(
+        username: String,
+        password: String,
+        rePassword: String
+    ): Boolean {
+        val passwordPattern = "^[A-Za-z0-9]{5,20}\$"
+        val usernamePattern = "^[A-Za-z0-9]{3,20}\$"
+        return password == rePassword && username.matches(usernamePattern.toRegex()) && password.matches(
+            passwordPattern.toRegex()
+        )
+    }
+
+    private fun goToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        this.finish()
+    }
 
     private fun setListener() {
-        binding.ivBack.setOnClickListener{
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            this.finish()
+        binding.ivBack.setOnClickListener {
+            goToLogin()
         }
 
         binding.btLogin.setOnClickListener {
-            SaveData(this).updateAccount(binding.edtUsername.text.toString(),
-                binding.edtPassword.text.toString(), "")
-            viewModel.sendRegisterMessage(
-                binding.edtUsername.text.toString(),
-                binding.edtPassword.text.toString()
-            )
+            val username = binding.edtUsername.text.toString()
+            val password = binding.edtPassword.text.toString()
+            val rePassword = binding.edtRepassword.text.toString()
+
+            if (isValidateRegister(username, password, rePassword)) {
+                SaveData(this).updateAccount(username, password, "")
+                viewModel.sendRegisterMessage(username, password)
+            } else {
+                showAlertDialog()
+            }
         }
+    }
+
+    private fun showAlertDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Invalid input")
+        builder.setMessage("- Username at least characters.\n- Password must be between 5 and 20 characters. \n- Password and re-password are the same.")
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.show()
     }
 
     override fun finish() {
