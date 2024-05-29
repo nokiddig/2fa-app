@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -31,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         setListener()
         checkPermission()
         checkSaveAccount()
+
         loginViewModel.initialize()
         lifecycleScope.launch {
             loginViewModel.loginState.collect { loggedIn ->
@@ -53,6 +55,20 @@ class LoginActivity : AppCompatActivity() {
                         dialog.show()
                     }
 
+                    0 -> {
+                        Toast.makeText(applicationContext, "Login fail!", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
+            }
+        }
+        lifecycleScope.launch {
+            loginViewModel.otpState.collect { otpSt ->
+                when (otpSt) {
+                    0 -> {
+                        Toast.makeText(applicationContext, "OTP wrong!", Toast.LENGTH_SHORT).show()
+                        SocketManager.getInstance().resetOTPState()
+                    }
                 }
             }
         }

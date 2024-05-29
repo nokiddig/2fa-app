@@ -208,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="11dp"
                     android:button="@drawable/check_box_selector"
-                    android:checked="true"
+                    android:checked="false"
                     android:text="Remember account"
                     android:textColor="@color/text_color_normal" />
 

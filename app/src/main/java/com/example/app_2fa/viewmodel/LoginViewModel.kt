@@ -11,6 +11,8 @@ class LoginViewModel : ViewModel() {
 
     private var _loginState = MutableStateFlow(-1)
     val loginState: StateFlow<Int> get() = _loginState
+    private var _otpState = MutableStateFlow(-1)
+    val otpState: StateFlow<Int> get() = _otpState
     private lateinit var socketManager: SocketManager
 
     fun initialize() {
@@ -19,6 +21,12 @@ class LoginViewModel : ViewModel() {
             socketManager.loginState.collect { state ->
                 _loginState.value = state
                 Log.d("bug_2fa", "login socket $state")
+            }
+        }
+        viewModelScope.launch {
+            socketManager.otpState.collect { state ->
+                _loginState.value = state
+                Log.d("bug_2fa", "login otp $state")
             }
         }
     }

@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +42,11 @@ class SettingFragment : Fragment() {
             viewModel.twoFAState.collect { isOn ->
                 binding.switch2fa.isChecked = isOn
                 SaveData(requireContext()).update2faMode(isOn)
+                var state = "OFF"
+                if (isOn){
+                    state = "ON"
+                }
+                Toast.makeText(requireContext(), "Two factor mode: $state", Toast.LENGTH_SHORT).show()
             }
         }
 

@@ -18,12 +18,14 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
     private val _twoFAState = MutableStateFlow(SaveData.IS_2FA)
     private val _keyState = MutableStateFlow("")
     private val _registerState = MutableStateFlow(-1)
+    private val _otpState = MutableStateFlow(-1)
     private var connectStatus = false
 
     val loginState: StateFlow<Int> get() = _loginState
     val twoFAState: StateFlow<Boolean> get() = _twoFAState
     val keyState: StateFlow<String> get() = _keyState
     val registerState: StateFlow<Int> get() = _registerState
+    val otpState: StateFlow<Int> get() = _otpState
 
     // Khởi tạo các listener
     private val onConnect = Emitter.Listener {
@@ -68,12 +70,18 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
 
             Constants.MODE_XAC_MINH_2FA -> {
                 if (SaveData.IS_LOGIN){
-
+                    if (message.isDigitsOnly()){
+                        _otpState.value = message.toInt()
+                    }
                 }
                 else {
-                    SYSTEM_MODE = Constants.MODE_LOGIN
                     if (message.isDigitsOnly() && message.toInt() == 1){
+                        SYSTEM_MODE = Constants.MODE_LOGIN
                         _loginState.value = 1
+                    }
+                    else {
+                        //_loginState.value = -1
+                        _otpState.value = 0
                     }
                 }
 
@@ -146,5 +154,9 @@ class SocketManager(serverAddress: String = "107.178.102.172:3000") {
 
     fun clearRegisterState(){
         _registerState.value = -1
+    }
+
+    fun resetOTPState() {
+        _otpState.value = -1
     }
 }
