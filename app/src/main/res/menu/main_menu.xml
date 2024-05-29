@@ -5,10 +5,10 @@
     <item
         android:icon="@drawable/ic_home"
         android:id="@+id/tab_home"
-        android:title="Home" />
+        android:title="@string/home" />
     <item
         android:icon="@drawable/ic_settings"
         android:id="@+id/tab_setting"
-        android:title="Setting" />
+        android:title="@string/setting" />
 
 </menu>

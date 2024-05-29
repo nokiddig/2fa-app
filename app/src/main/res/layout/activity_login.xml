@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.login.LoginActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".view.login.LoginActivity">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
@@ -17,9 +17,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_login"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/bg_login"
             app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,8 +34,6 @@
                     android:translationY="-80dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
                 <ImageView
@@ -55,15 +53,15 @@
                     app:layout_constraintGuide_percent="0.4" />
 
                 <TextView
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginStart="50dp"
-                    android:layout_marginTop="50dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="50dp"
+                    android:layout_marginTop="50dp"
                     android:text="Welcome \nBack"
-                    android:textSize="40sp"
                     android:textColor="@color/white"
+                    android:textSize="40sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteX="38dp"
                     tools:layout_editor_absoluteY="-12dp" />
 
@@ -76,11 +74,11 @@
                 android:translationY="50dp">
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="11dp">
+                    android:padding="11dp"
+                    android:visibility="gone">
 
 
                     <TextView
@@ -104,13 +102,13 @@
                         android:background="@drawable/card_input"
                         android:drawableLeft="@drawable/ic_id"
                         android:drawablePadding="9dp"
+                        android:ellipsize="end"
                         android:gravity="start|center"
                         android:inputType="text"
                         android:paddingStart="26dp"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:translationZ="-1dp"
-                        android:ellipsize="end"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -119,9 +117,9 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="70dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
                     android:orientation="vertical"
                     android:padding="11dp">
 
@@ -148,13 +146,13 @@
                         android:background="@drawable/card_input"
                         android:drawableLeft="@drawable/ic_id"
                         android:drawablePadding="9dp"
+                        android:ellipsize="end"
                         android:gravity="start|center"
                         android:inputType="text"
                         android:paddingStart="26dp"
                         android:textColor="@color/black"
                         android:textSize="20sp"
                         android:translationZ="-1dp"
-                        android:ellipsize="end"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -190,12 +188,12 @@
                         android:background="@drawable/card_input"
                         android:drawableLeft="@drawable/ic_password"
                         android:drawablePadding="9dp"
+                        android:ellipsize="end"
                         android:gravity="start|center"
                         android:inputType="textPassword"
                         android:paddingStart="26dp"
                         android:textColor="@color/black"
                         android:textSize="20sp"
-                        android:ellipsize="end"
                         android:translationZ="-1dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -203,15 +201,17 @@
                         app:layout_constraintVertical_bias="0.0" />
 
                 </LinearLayout>
+
                 <CheckBox
                     android:id="@+id/saveCheckbox"
-                    android:checked="true"
-                    android:layout_marginHorizontal="11dp"
-                    android:text="Remember account"
-                    android:button="@drawable/check_box_selector"
-                    android:textColor="@color/text_color_normal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="11dp"
+                    android:button="@drawable/check_box_selector"
+                    android:checked="true"
+                    android:text="Remember account"
+                    android:textColor="@color/text_color_normal" />
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/bt_login"
                     style="@style/TextWhiteBold20"
@@ -226,6 +226,7 @@
                     android:textStyle="normal" />
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_register"
                 android:layout_width="wrap_content"

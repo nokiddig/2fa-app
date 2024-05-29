@@ -26,4 +26,6 @@
     <string name="on_two_factor">On two factor</string>
     <string name="otp">OTP:</string>
     <string name="yes">Yes</string>
+    <string name="home">Home</string>
+    <string name="setting">Setting</string>
 </resources>
